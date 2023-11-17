@@ -1,0 +1,23 @@
+all:
+  oidc:
+    provider_url: 'http://dex:5556/dex'
+    client_id: 'artefactual-atom'
+    client_secret: 'example-secret'
+    redirect_url: 'http://127.0.0.1:63001/index.php/oidc/login'
+
+    # Settings for parsing OIDC groups into AtoM group membership.
+    # Set set_groups_from_attributes to true to enable.
+    set_groups_from_attributes: true
+    user_groups:
+        administrator:
+            attribute_value: 'Administrator'
+            group_id: 100
+        editor:
+            attribute_value: 'Archivist'
+            group_id: 101
+        contributor:
+            attribute_value: 'Officer'
+            group_id: 102
+        translator:
+            attribute_value: 'Archivist'
+            group_id: 103
