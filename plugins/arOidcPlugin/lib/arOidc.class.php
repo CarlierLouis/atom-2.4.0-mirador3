@@ -20,6 +20,30 @@
  * maintained by H.Lepesant, MIT License, https://github.com/jeanmonod/sfCASPlugin.
  */
 
+require_once sfConfig::get('sf_root_dir').'/vendor/composer/jumbojett/openid-connect-php/src/OpenIDConnectClient.php';
+
+class CustomOpenIDConnectClient extends \Jumbojett\OpenIDConnectClient
+{
+    public function __construct($provider_url = null, $client_id = null, $client_secret = null)
+    {
+        parent::__construct($provider_url, $client_id, $client_secret);
+    }
+
+    public function refreshToken(string $refresh_token)
+    {
+        $response = parent::refreshToken($refresh_token);
+
+        if (isset($response->id_token)) {
+            $this->idToken = $response->id_token;
+            $claims = $this->decodeJWT($this->idToken, 1);
+            $this->tokenResponse = $response;
+            $this->verifiedClaims = $claims;
+        }
+
+        return $response;
+    }
+}
+
 class arOidc
 {
     protected static $oidcIsInitialized = false;
@@ -27,14 +51,12 @@ class arOidc
     /**
      * Initialize.
      */
-    public static function initializeOidc()
+    public static function getOidcInstance()
     {
         // Return if already initialized
         if (self::$oidcIsInitialized) {
             return;
         }
-
-        require_once sfConfig::get('sf_root_dir').'/vendor/composer/jumbojett/openid-connect-php/src/OpenIDConnectClient.php';
 
         $provider_url = sfConfig::get('app_oidc_provider_url', '');
         if (empty($provider_url)) {
@@ -49,9 +71,10 @@ class arOidc
             throw new Exception('Invalid OIDC client secret. Please review the app_oidc_client_secret parameter in plugin app.yml.');
         }
 
-        $oidc = new \Jumbojett\OpenIDConnectClient($provider_url, $client_id, $client_secret);
+        // $oidc = new \Jumbojett\OpenIDConnectClient($provider_url, $client_id, $client_secret);
+        $oidc = new CustomOpenIDConnectClient($provider_url, $client_id, $client_secret);
 
-        $oidc->addScope(['profile', 'email', 'openid', 'groups']);
+        $oidc->addScope(['openid', 'offline_access', 'profile', 'email', 'groups']);
 
         $redirect_url = sfConfig::get('app_oidc_redirect_url', '');
         if (empty($redirect_url)) {
@@ -64,6 +87,7 @@ class arOidc
         if (0 === !strpos($certPath, '/')) {
             $certPath = sfConfig::get('sf_root_dir').DIRECTORY_SEPARATOR.$certPath;
         }
+
         if (file_exists($certPath)) {
             // setOidcServerCACert(certPath);
         } elseif (false === $certPath) {

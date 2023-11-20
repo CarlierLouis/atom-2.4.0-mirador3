@@ -19,11 +19,16 @@
 
 class oidcUser extends myUser implements Zend_Acl_Role_Interface
 {
+    private $oidcClient;
+
     public function initialize(sfEventDispatcher $dispatcher, sfStorage $storage, $options = [])
     {
-        // initialize parent
-        parent::initialize($dispatcher, $storage, $options);
         $this->logger = sfContext::getInstance()->getLogger();
+        if (null === $this->oidcClient) {
+            $this->oidcClient = arOidc::getOidcInstance();
+        }
+
+        parent::initialize($dispatcher, $storage, $options);
     }
 
     /**
@@ -36,22 +41,22 @@ class oidcUser extends myUser implements Zend_Acl_Role_Interface
     {
         $authenticated = false;
 
-        try {            
-            $oidc = arOidc::initializeOidc();
-
+        try {
             if (isset($_REQUEST['code'])) {
                 $this->logger->info('OIDC request "code" is set: %1%', ['%1%' => $_REQUEST['code']]);
             }
 
-            if ($oidc->authenticate()) {
-                $username = $oidc->requestUserInfo('email');    
-                $token = $oidc->getIdToken();
+            if ($this->oidcClient->authenticate()) {
+                $username = $this->oidcClient->requestUserInfo('email');
+                $token = $this->oidcClient->getIdToken();
+                $refreshToken = $this->oidcClient->getRefreshToken();
+                $expiryTime = $this->oidcClient->getVerifiedClaims('exp');
 
                 $this->setAttribute('oidc-token', $token);
+                $this->setAttribute('oidc-expiry', $expiryTime);
+                $this->setAttribute('oidc-refresh', $refreshToken);
+                $claims = $this->oidcClient->getIdTokenPayload();
 
-                $claims = $oidc->getIdTokenPayload();
-                $this->logger->info('OIDC claims: %1%', ['%1%' => json_encode($claims)]);
-                
                 // Load user using username or, if one doesn't exist, create it.
                 $criteria = new Criteria();
                 $criteria->add(QubitUser::USERNAME, $username);
@@ -72,9 +77,44 @@ class oidcUser extends myUser implements Zend_Acl_Role_Interface
 
                 return $authenticated;
             }
-        } catch ( Exception $e ) {
-            sfContext::getInstance()->getLogger()->err($e->__toString() . PHP_EOL);
+        } catch (Exception $e) {
+            sfContext::getInstance()->getLogger()->err($e->__toString().PHP_EOL);
         }
+    }
+
+    public function isAuthenticated()
+    {
+        $currentTime = time();
+        $expiryTime = $this->getAttribute('oidc-expiry', null);
+        $refreshToken = $this->getAttribute('oidc-refresh');
+
+        // Check if token has expired.
+        if (null !== $expiryTime && $currentTime >= $expiryTime) {
+            if ($refreshToken) {
+                try {
+                    $this->logger->info('ID token expired - using refresh token to extend session.');
+                    $refreshResult = $this->oidcClient->refreshToken($refreshToken);
+
+                    $newToken = $this->oidcClient->getIdToken();
+                    $newRefreshToken = $this->oidcClient->getRefreshToken();
+                    $newExpiryTime = $this->oidcClient->getVerifiedClaims('exp');
+
+                    // Use the new access tokens going forward.
+                    $this->setAttribute('oidc-token', $newToken);
+                    $this->setAttribute('oidc-expiry', $newExpiryTime);
+                    $this->setAttribute('oidc-refresh', $newRefreshToken);
+                } catch (Exception $e) {
+                    sfContext::getInstance()->getLogger()->err($e->__toString().PHP_EOL);
+                }
+            } else {
+                $this->logger->info('Refresh token unavailable - authenticating user');
+                $this->unsetAttributes();
+
+                return false;
+            }
+        }
+
+        return parent::isAuthenticated();
     }
 
     /**
@@ -82,8 +122,10 @@ class oidcUser extends myUser implements Zend_Acl_Role_Interface
      */
     public function logout()
     {
+        $this->unsetAttributes();
+
         $this->signOut();
-        // Dex does not yet implement end_session_endpoint so $oidc->signOut will fail.
+        // Dex does not yet implement end_session_endpoint so $this->oidcClient->signOut will fail.
         // https://github.com/dexidp/dex/issues/1697
     }
 
@@ -91,7 +133,6 @@ class oidcUser extends myUser implements Zend_Acl_Role_Interface
      * Set group membership based on user group claims returned by OIDC server.
      *
      * @param mixed $user
-     * @param mixed $attributes
      */
     protected function setGroupsFromOIDCGroups($user, array $groups)
     {
@@ -129,5 +170,12 @@ class oidcUser extends myUser implements Zend_Acl_Role_Interface
                 }
             }
         }
+    }
+
+    private function unsetAttributes()
+    {
+        $this->setAttribute('oidc-token', '');
+        $this->setAttribute('oidc-expiry', '');
+        $this->setAttribute('oidc-refresh', '');
     }
 }
