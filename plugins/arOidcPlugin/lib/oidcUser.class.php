@@ -68,8 +68,12 @@ class oidcUser extends myUser implements Zend_Acl_Role_Interface
                 // Parse OIDC group claims into group memberships. If enabled, we perform this
                 // check each time a user authenticates so that changes made on the OIDC
                 // server are applied in AtoM on the next login.
-                if (true == sfConfig::get('app_oidc_set_groups_from_attributes', false)) {
-                    $this->setGroupsFromOIDCGroups($user, $claims->groups);
+                $setGroupsFromClaims = sfConfig::get('app_oidc_set_groups_from_attributes', false);
+                if (null === $claims->groups && true == $setGroupsFromClaims) {
+                    sfContext::getInstance()->getLogger()->err("OIDC group mapping is configured but group claims not received from upstream.");
+                }
+                if (null !== $claims->groups && true == $setGroupsFromClaims) {
+                    $this->setGroupsFromOIDCGroups($user, $claims->groups);                    
                 }
 
                 $authenticated = true;
