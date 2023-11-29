@@ -43,7 +43,7 @@ class oidcUser extends myUser implements Zend_Acl_Role_Interface
 
         try {
             if (isset($_REQUEST['code'])) {
-                $this->logger->info('OIDC request "code" is set: %1%', ['%1%' => $_REQUEST['code']]);
+                $this->logger->info(sprintf('OIDC request "code" is set: %s', $_REQUEST['code']));
             }
 
             if ($this->oidcClient->authenticate()) {
