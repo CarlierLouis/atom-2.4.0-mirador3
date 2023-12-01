@@ -1,0 +1,27 @@
+<?php decorate_with('layout_1col'); ?>
+<?php use_helper('Javascript'); ?>
+
+<?php slot('content'); ?>
+
+  <?php echo $form->renderGlobalErrors(); ?>
+
+    <?php if ($sf_context->getConfiguration()->isPluginEnabled('arCasPlugin')) { ?>
+      <?php echo $form->renderFormTag(url_for(['module' => 'cas', 'action' => 'login'])); ?>
+    <?php } else if ($sf_context->getConfiguration()->isPluginEnabled('arOidcPlugin')) { ?>
+      <?php echo $form->renderFormTag(url_for(['module' => 'oidc', 'action' => 'login'])); ?>
+    <?php } ?>
+
+    <?php echo $form->renderHiddenFields(); ?>
+
+    <ul class="actions mb-3 nav gap-2">
+      <?php if ($sf_context->getConfiguration()->isPluginEnabled('arCasPlugin')) { ?>
+        <button type="submit" class="btn atom-btn-outline-success"><?php echo __('Log in with CAS'); ?></button>
+      <?php } else if ($sf_context->getConfiguration()->isPluginEnabled('arOidcPlugin')) { ?>
+        <button type="submit" class="btn atom-btn-outline-success"><?php echo __('Log in with SSO'); ?></button>
+      <?php } ?>
+      
+    </ul>
+
+  </form>
+
+<?php end_slot(); ?>
