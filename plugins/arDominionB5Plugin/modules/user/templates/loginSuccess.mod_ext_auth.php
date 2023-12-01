@@ -14,12 +14,13 @@
     <?php echo $form->renderHiddenFields(); ?>
 
     <ul class="actions mb-3 nav gap-2">
+      <button type="submit" class="btn atom-btn-outline-success">
       <?php if ($sf_context->getConfiguration()->isPluginEnabled('arCasPlugin')) { ?>
-        <button type="submit" class="btn atom-btn-outline-success"><?php echo __('Log in with CAS'); ?></button>
+        <?php echo __('Log in with CAS'); ?>
       <?php } else if ($sf_context->getConfiguration()->isPluginEnabled('arOidcPlugin')) { ?>
-        <button type="submit" class="btn atom-btn-outline-success"><?php echo __('Log in with SSO'); ?></button>
+        <?php echo __('Log in with SSO'); ?>
       <?php } ?>
-      
+      </button>
     </ul>
 
   </form>
