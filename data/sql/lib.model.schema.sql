@@ -43,7 +43,7 @@ CREATE TABLE `actor`
 	`parent_id` INTEGER,
 	`lft` INTEGER  NOT NULL,
 	`rgt` INTEGER  NOT NULL,
-	`source_culture` VARCHAR(7)  NOT NULL,
+	`source_culture` VARCHAR(16)  NOT NULL,
 	PRIMARY KEY (`id`),
 	CONSTRAINT `actor_FK_1`
 		FOREIGN KEY (`id`)
@@ -93,7 +93,7 @@ CREATE TABLE `actor_i18n`
 	`sources` TEXT,
 	`revision_history` TEXT,
 	`id` INTEGER  NOT NULL,
-	`culture` VARCHAR(7)  NOT NULL,
+	`culture` VARCHAR(16)  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
 	CONSTRAINT `actor_i18n_FK_1`
 		FOREIGN KEY (`id`)
@@ -197,7 +197,7 @@ CREATE TABLE `contact_information`
 	`latitude` FLOAT,
 	`created_at` DATETIME  NOT NULL,
 	`updated_at` DATETIME  NOT NULL,
-	`source_culture` VARCHAR(7)  NOT NULL,
+	`source_culture` VARCHAR(16)  NOT NULL,
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`serial_number` INTEGER default 0 NOT NULL,
 	PRIMARY KEY (`id`),
@@ -222,7 +222,7 @@ CREATE TABLE `contact_information_i18n`
 	`region` VARCHAR(1024),
 	`note` TEXT,
 	`id` INTEGER  NOT NULL,
-	`culture` VARCHAR(7)  NOT NULL,
+	`culture` VARCHAR(16)  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
 	CONSTRAINT `contact_information_i18n_FK_1`
 		FOREIGN KEY (`id`)
@@ -293,7 +293,7 @@ CREATE TABLE `event`
 	`type_id` INTEGER  NOT NULL,
 	`object_id` INTEGER,
 	`actor_id` INTEGER,
-	`source_culture` VARCHAR(7)  NOT NULL,
+	`source_culture` VARCHAR(16)  NOT NULL,
 	PRIMARY KEY (`id`),
 	CONSTRAINT `event_FK_1`
 		FOREIGN KEY (`id`)
@@ -328,7 +328,7 @@ CREATE TABLE `event_i18n`
 	`description` TEXT,
 	`date` VARCHAR(1024),
 	`id` INTEGER  NOT NULL,
-	`culture` VARCHAR(7)  NOT NULL,
+	`culture` VARCHAR(16)  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
 	CONSTRAINT `event_i18n_FK_1`
 		FOREIGN KEY (`id`)
@@ -354,7 +354,7 @@ CREATE TABLE `function`
 	`source_standard` VARCHAR(1024),
 	`lft` INTEGER,
 	`rgt` INTEGER,
-	`source_culture` VARCHAR(7)  NOT NULL,
+	`source_culture` VARCHAR(16)  NOT NULL,
 	PRIMARY KEY (`id`),
 	CONSTRAINT `function_FK_1`
 		FOREIGN KEY (`id`)
@@ -398,7 +398,7 @@ CREATE TABLE `function_i18n`
 	`rules` TEXT,
 	`sources` TEXT,
 	`id` INTEGER  NOT NULL,
-	`culture` VARCHAR(7)  NOT NULL,
+	`culture` VARCHAR(16)  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
 	CONSTRAINT `function_i18n_FK_1`
 		FOREIGN KEY (`id`)
@@ -429,7 +429,7 @@ CREATE TABLE `information_object`
 	`display_standard_id` INTEGER,
 	`lft` INTEGER  NOT NULL,
 	`rgt` INTEGER  NOT NULL,
-	`source_culture` VARCHAR(7)  NOT NULL,
+	`source_culture` VARCHAR(16)  NOT NULL,
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `information_object_U_1` (`oai_local_identifier`),
 	KEY `lft`(`lft`),
@@ -502,7 +502,7 @@ CREATE TABLE `information_object_i18n`
 	`sources` TEXT,
 	`revision_history` TEXT,
 	`id` INTEGER  NOT NULL,
-	`culture` VARCHAR(7)  NOT NULL,
+	`culture` VARCHAR(16)  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
 	CONSTRAINT `information_object_i18n_FK_1`
 		FOREIGN KEY (`id`)
@@ -544,7 +544,7 @@ CREATE TABLE `menu`
 	`rgt` INTEGER  NOT NULL,
 	`created_at` DATETIME  NOT NULL,
 	`updated_at` DATETIME  NOT NULL,
-	`source_culture` VARCHAR(7)  NOT NULL,
+	`source_culture` VARCHAR(16)  NOT NULL,
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`serial_number` INTEGER default 0 NOT NULL,
 	PRIMARY KEY (`id`),
@@ -567,7 +567,7 @@ CREATE TABLE `menu_i18n`
 	`label` VARCHAR(255),
 	`description` TEXT,
 	`id` INTEGER  NOT NULL,
-	`culture` VARCHAR(7)  NOT NULL,
+	`culture` VARCHAR(16)  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
 	CONSTRAINT `menu_i18n_FK_1`
 		FOREIGN KEY (`id`)
@@ -588,7 +588,7 @@ CREATE TABLE `note`
 	`type_id` INTEGER,
 	`scope` VARCHAR(1024),
 	`user_id` INTEGER,
-	`source_culture` VARCHAR(7)  NOT NULL,
+	`source_culture` VARCHAR(16)  NOT NULL,
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`serial_number` INTEGER default 0 NOT NULL,
 	PRIMARY KEY (`id`),
@@ -619,7 +619,7 @@ CREATE TABLE `note_i18n`
 (
 	`content` TEXT,
 	`id` INTEGER  NOT NULL,
-	`culture` VARCHAR(7)  NOT NULL,
+	`culture` VARCHAR(16)  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
 	CONSTRAINT `note_i18n_FK_1`
 		FOREIGN KEY (`id`)
@@ -735,7 +735,7 @@ CREATE TABLE `other_name`
 	`type_id` INTEGER,
 	`start_date` DATE,
 	`end_date` DATE,
-	`source_culture` VARCHAR(7)  NOT NULL,
+	`source_culture` VARCHAR(16)  NOT NULL,
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`serial_number` INTEGER default 0 NOT NULL,
 	PRIMARY KEY (`id`),
@@ -764,7 +764,7 @@ CREATE TABLE `other_name_i18n`
 	`note` VARCHAR(1024),
 	`dates` TEXT,
 	`id` INTEGER  NOT NULL,
-	`culture` VARCHAR(7)  NOT NULL,
+	`culture` VARCHAR(16)  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
 	CONSTRAINT `other_name_i18n_FK_1`
 		FOREIGN KEY (`id`)
@@ -786,7 +786,7 @@ CREATE TABLE `physical_object`
 	`parent_id` INTEGER,
 	`lft` INTEGER  NOT NULL,
 	`rgt` INTEGER  NOT NULL,
-	`source_culture` VARCHAR(7)  NOT NULL,
+	`source_culture` VARCHAR(16)  NOT NULL,
 	PRIMARY KEY (`id`),
 	CONSTRAINT `physical_object_FK_1`
 		FOREIGN KEY (`id`)
@@ -816,7 +816,7 @@ CREATE TABLE `physical_object_i18n`
 	`description` TEXT,
 	`location` TEXT,
 	`id` INTEGER  NOT NULL,
-	`culture` VARCHAR(7)  NOT NULL,
+	`culture` VARCHAR(16)  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
 	CONSTRAINT `physical_object_i18n_FK_1`
 		FOREIGN KEY (`id`)
@@ -864,7 +864,7 @@ CREATE TABLE `property`
 	`object_id` INTEGER  NOT NULL,
 	`scope` VARCHAR(1024),
 	`name` VARCHAR(1024),
-	`source_culture` VARCHAR(7)  NOT NULL,
+	`source_culture` VARCHAR(16)  NOT NULL,
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`serial_number` INTEGER default 0 NOT NULL,
 	PRIMARY KEY (`id`),
@@ -886,7 +886,7 @@ CREATE TABLE `property_i18n`
 (
 	`value` TEXT,
 	`id` INTEGER  NOT NULL,
-	`culture` VARCHAR(7)  NOT NULL,
+	`culture` VARCHAR(16)  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
 	CONSTRAINT `property_i18n_FK_1`
 		FOREIGN KEY (`id`)
@@ -909,7 +909,7 @@ CREATE TABLE `relation`
 	`type_id` INTEGER,
 	`start_date` DATE,
 	`end_date` DATE,
-	`source_culture` VARCHAR(7)  NOT NULL,
+	`source_culture` VARCHAR(16)  NOT NULL,
 	PRIMARY KEY (`id`),
 	CONSTRAINT `relation_FK_1`
 		FOREIGN KEY (`id`)
@@ -941,7 +941,7 @@ CREATE TABLE `relation_i18n`
 	`description` TEXT,
 	`date` VARCHAR(1024),
 	`id` INTEGER  NOT NULL,
-	`culture` VARCHAR(7)  NOT NULL,
+	`culture` VARCHAR(16)  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
 	CONSTRAINT `relation_i18n_FK_1`
 		FOREIGN KEY (`id`)
@@ -964,7 +964,7 @@ CREATE TABLE `repository`
 	`desc_detail_id` INTEGER,
 	`desc_identifier` VARCHAR(1024),
 	`upload_limit` FLOAT,
-	`source_culture` VARCHAR(7)  NOT NULL,
+	`source_culture` VARCHAR(16)  NOT NULL,
 	PRIMARY KEY (`id`),
 	CONSTRAINT `repository_FK_1`
 		FOREIGN KEY (`id`)
@@ -1007,7 +1007,7 @@ CREATE TABLE `repository_i18n`
 	`desc_sources` TEXT,
 	`desc_revision_history` TEXT,
 	`id` INTEGER  NOT NULL,
-	`culture` VARCHAR(7)  NOT NULL,
+	`culture` VARCHAR(16)  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
 	CONSTRAINT `repository_i18n_FK_1`
 		FOREIGN KEY (`id`)
@@ -1034,7 +1034,7 @@ CREATE TABLE `rights`
 	`copyright_jurisdiction` VARCHAR(1024),
 	`statute_determination_date` DATE,
 	`statute_citation_id` INTEGER,
-	`source_culture` VARCHAR(7)  NOT NULL,
+	`source_culture` VARCHAR(16)  NOT NULL,
 	PRIMARY KEY (`id`),
 	CONSTRAINT `rights_FK_1`
 		FOREIGN KEY (`id`)
@@ -1111,7 +1111,7 @@ CREATE TABLE `rights_i18n`
 	`statute_jurisdiction` TEXT,
 	`statute_note` TEXT,
 	`id` INTEGER  NOT NULL,
-	`culture` VARCHAR(7)  NOT NULL,
+	`culture` VARCHAR(16)  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
 	CONSTRAINT `rights_i18n_FK_1`
 		FOREIGN KEY (`id`)
@@ -1149,7 +1149,7 @@ CREATE TABLE `setting`
 	`scope` VARCHAR(255),
 	`editable` TINYINT default 0,
 	`deleteable` TINYINT default 0,
-	`source_culture` VARCHAR(7)  NOT NULL,
+	`source_culture` VARCHAR(16)  NOT NULL,
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`serial_number` INTEGER default 0 NOT NULL,
 	PRIMARY KEY (`id`)
@@ -1166,7 +1166,7 @@ CREATE TABLE `setting_i18n`
 (
 	`value` TEXT,
 	`id` INTEGER  NOT NULL,
-	`culture` VARCHAR(7)  NOT NULL,
+	`culture` VARCHAR(16)  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
 	CONSTRAINT `setting_i18n_FK_1`
 		FOREIGN KEY (`id`)
@@ -1206,7 +1206,7 @@ DROP TABLE IF EXISTS `static_page`;
 CREATE TABLE `static_page`
 (
 	`id` INTEGER  NOT NULL,
-	`source_culture` VARCHAR(7)  NOT NULL,
+	`source_culture` VARCHAR(16)  NOT NULL,
 	PRIMARY KEY (`id`),
 	CONSTRAINT `static_page_FK_1`
 		FOREIGN KEY (`id`)
@@ -1226,7 +1226,7 @@ CREATE TABLE `static_page_i18n`
 	`title` VARCHAR(1024),
 	`content` TEXT,
 	`id` INTEGER  NOT NULL,
-	`culture` VARCHAR(7)  NOT NULL,
+	`culture` VARCHAR(16)  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
 	CONSTRAINT `static_page_i18n_FK_1`
 		FOREIGN KEY (`id`)
@@ -1280,7 +1280,7 @@ CREATE TABLE `taxonomy`
 	`parent_id` INTEGER,
 	`lft` INTEGER  NOT NULL,
 	`rgt` INTEGER  NOT NULL,
-	`source_culture` VARCHAR(7)  NOT NULL,
+	`source_culture` VARCHAR(16)  NOT NULL,
 	PRIMARY KEY (`id`),
 	CONSTRAINT `taxonomy_FK_1`
 		FOREIGN KEY (`id`)
@@ -1304,7 +1304,7 @@ CREATE TABLE `taxonomy_i18n`
 	`name` VARCHAR(1024),
 	`note` TEXT,
 	`id` INTEGER  NOT NULL,
-	`culture` VARCHAR(7)  NOT NULL,
+	`culture` VARCHAR(16)  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
 	CONSTRAINT `taxonomy_i18n_FK_1`
 		FOREIGN KEY (`id`)
@@ -1327,7 +1327,7 @@ CREATE TABLE `term`
 	`parent_id` INTEGER,
 	`lft` INTEGER  NOT NULL,
 	`rgt` INTEGER  NOT NULL,
-	`source_culture` VARCHAR(7)  NOT NULL,
+	`source_culture` VARCHAR(16)  NOT NULL,
 	PRIMARY KEY (`id`),
 	KEY `lft`(`lft`),
 	CONSTRAINT `term_FK_1`
@@ -1356,7 +1356,7 @@ CREATE TABLE `term_i18n`
 (
 	`name` VARCHAR(1024),
 	`id` INTEGER  NOT NULL,
-	`culture` VARCHAR(7)  NOT NULL,
+	`culture` VARCHAR(16)  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
 	CONSTRAINT `term_i18n_FK_1`
 		FOREIGN KEY (`id`)
