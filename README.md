@@ -1,3 +1,6 @@
+Use the ```npm install``` command to install the Mirador package and and all the packages it depends on.
+
+<hr>
 See https://wiki.accesstomemory.org/ for installation instructions.
 
 Access to Memory (AtoM) is an application built using the Symfony framework.
