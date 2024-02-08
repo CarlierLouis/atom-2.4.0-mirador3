@@ -1,0 +1,19 @@
+#miradorViewer-wrapper {
+    height: 70vh;
+    position: relative;
+    z-index: 0;
+}
+
+#miradorViewer-wrapper h2 {
+    color: black;
+    border: none;
+    font-size: 17.072px;
+}
+
+#miradorViewer-wrapper nav>div {
+    height: auto;
+    float:none;
+}
+
+
+

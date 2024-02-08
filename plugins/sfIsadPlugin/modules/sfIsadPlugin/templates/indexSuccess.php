@@ -50,7 +50,18 @@
 
 <?php end_slot() ?>
 
-<?php if (0 < count($resource->digitalObjects)): ?>
+<section id="miradorViewer">
+
+  <?php /* get the file's content */ $get_content = file_get_contents($digitalObjectLink) ?> 
+  <?php /* if the json object cannot be decoded it returns null */ $json_data = json_decode($get_content) ?>
+  <?php /* show the viewer only if digitalObjectLink is a json */if ($json_data != null): ?>
+    <?php include '../atom-2.4.0-mirador3/mirador3/miradorViewerComponent.php'?>
+    <?php echo renderMiradorViewerComponent($digitalObjectLink); ?>
+  <?php endif; ?>
+  
+</section>
+
+<?php if (0 < count($resource->digitalObjects) /* add condition to hide mirador viewer -> */ && $json_data == null): ?>
   <?php echo get_component('digitalobject', 'show', array('link' => $digitalObjectLink, 'resource' => $resource->digitalObjects[0], 'usageType' => QubitTerm::REFERENCE_ID)) ?>
 <?php endif; ?>
 
