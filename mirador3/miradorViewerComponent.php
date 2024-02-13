@@ -1,4 +1,4 @@
-<?php function renderMiradorViewerComponent($jsonlink) { ?> 
+<?php function renderMiradorViewerComponent($jsonlink, $catalog) { ?> 
     <div id="miradorViewer-wrapper">
         <div id="mirador"></div>
     </div>
@@ -27,11 +27,12 @@
         language: 'fr',
         windows: [
         {
-            manifestId: "<?php echo ($jsonlink) ?>",
+            manifestId: "<?php echo $jsonlink ?>",
         }],
         catalog: [
-            //{ manifestId: "https://archives.uclouvain.be/iiif/58593/manifest"},
-            //{ manifestId: "https://archives.uclouvain.be/iiif/58573/manifest"},
+            <?php foreach ($catalog as $manifestPathLink): ?>
+                { manifestId: "<?php echo $manifestPathLink ?>"},
+            <?php endforeach; ?>
         ]
         });
     });
