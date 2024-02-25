@@ -37,6 +37,24 @@ class MiradorUtils
         }
     }
 
+    public static function isIIIFManifest($digitalObjectLink)
+    {
+        $get_content = file_get_contents($digitalObjectLink);
+        $json_data = json_decode($get_content, true);
+        
+        if ($json_data != null &&
+            $json_data['@context'] === 'http://iiif.io/api/presentation/2/context.json' &&
+            $json_data['@type'] === 'sc:Manifest' &&
+            isset($json_data['@context']) &&
+            isset($json_data['@id']) &&
+            isset($json_data['@type'])
+        ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public static function addParentChildrenToCatalog($digitalObjectLink, $resource) 
     {
         $catalog = [];
@@ -44,9 +62,9 @@ class MiradorUtils
         {
             foreach ($resource->parent->getChildren() as $child) 
             {
-                if ($resource->id != $child->id && self::isJson($child->digitalObjects[0]->getFullPath())) 
+                if ($resource->id != $child->id && self::isIIIFManifest($child->getDigitalObjectLink())) 
                 {
-                    $catalog[] = $child->digitalObjects[0]->getFullPath();
+                    $catalog[] = $child->getDigitalObjectLink();
                 }
             }
         }
