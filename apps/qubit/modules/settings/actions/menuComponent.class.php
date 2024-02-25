@@ -81,6 +81,10 @@ class SettingsMenuComponent extends sfComponent
         'action' => 'treeview'
       ),
       array(
+        'label' => $i18n->__('IIIF Viewer'),
+        'action' => 'iiifViewer'
+      ),
+      array(
         'label' => $i18n->__('Privacy Notification'),
         'action' => 'privacyNotification'
       )

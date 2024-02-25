@@ -50,19 +50,30 @@
 
 <?php end_slot() ?>
 
-<section id="miradorViewer">
+<!-- Show Digital Object with or without IIIF Viewer -->
+<?php if (QubitSetting::getByName('iiifviewer_mirador') == "yes" ): ?>
+  <section id="miradorViewer">
 
-  <?php include '../atom-2.4.0-mirador3/mirador3/miradorViewerComponent.php'?>
-  <?php include '../atom-2.4.0-mirador3/mirador3/MiradorUtils.php'?>
-  <?php if (MiradorUtils::isJson($digitalObjectLink)): ?>
-    <?php echo renderMiradorViewerComponent($digitalObjectLink,  MiradorUtils::addParentChildrenToCatalog($digitalObjectLink, $resource)) ?>
+    <?php include '../atom-2.4.0-mirador3/mirador3/miradorViewerComponent.php'?>
+    <?php include '../atom-2.4.0-mirador3/mirador3/MiradorUtils.php'?>
+    <?php if (MiradorUtils::isJson($digitalObjectLink)): ?>
+      <?php echo renderMiradorViewerComponent($digitalObjectLink,  MiradorUtils::addParentChildrenToCatalog($digitalObjectLink, $resource)) ?>
+    <?php endif; ?>
+
+  </section>
+
+  <?php if (0 < count($resource->digitalObjects) /* add condition to hide traditional view -> */ && !MiradorUtils::isJson($digitalObjectLink)): ?>
+    <?php echo get_component('digitalobject', 'show', array('link' => $digitalObjectLink, 'resource' => $resource->digitalObjects[0], 'usageType' => QubitTerm::REFERENCE_ID)) ?>
   <?php endif; ?>
 
-</section>
+<?php else: ?>
 
-<?php if (0 < count($resource->digitalObjects) /* add condition to hide traditional view -> */ && !MiradorUtils::isJson($digitalObjectLink)): ?>
-  <?php echo get_component('digitalobject', 'show', array('link' => $digitalObjectLink, 'resource' => $resource->digitalObjects[0], 'usageType' => QubitTerm::REFERENCE_ID)) ?>
+  <?php if (0 < count($resource->digitalObjects)): ?>
+    <?php echo get_component('digitalobject', 'show', array('link' => $digitalObjectLink, 'resource' => $resource->digitalObjects[0], 'usageType' => QubitTerm::REFERENCE_ID)) ?>
+  <?php endif; ?>
+
 <?php endif; ?>
+<!-- -->
 
 <section id="identityArea">
 
