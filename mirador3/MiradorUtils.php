@@ -37,6 +37,7 @@ class MiradorUtils
         }
     }
 
+    // Check if a digital object is a iiif manifest
     public static function isIIIFManifest($digitalObjectLink)
     {
         $get_content = file_get_contents($digitalObjectLink);
@@ -55,7 +56,9 @@ class MiradorUtils
         }
     }
 
-    public static function addParentChildrenToCatalog($digitalObjectLink, $resource) 
+    
+    // Get IIIF Children from the same parent
+    public static function getParentChildren($resource) 
     {
         $catalog = [];
         if ($resource->parentId != 1) 
@@ -70,5 +73,36 @@ class MiradorUtils
         }
         return $catalog;
     }
+
+    // Get the root of a ressource
+    public static function getRootResource($resource) 
+    {
+        while ($resource->parentId != 1) {
+            $resource = $resource->parent;
+        }
+        
+        return $resource;
+    }
+
+
+    // Get all IIIF Children from the root 
+    public static function getAllChildrenFromRoot($resource) 
+    {
+        $catalog = [];
+        $rootRessource = self::getRootResource($resource);
+        $getAllChildrenFromRoot = function ($rootRessource) use (&$getAllChildrenFromRoot, &$catalog) {
+        foreach ($rootRessource->getChildren() as $child) {
+            if (self::isIIIFManifest($child->getDigitalObjectLink())) {
+                $catalog[] = $child->getDigitalObjectLink();
+            }
+            $getAllChildrenFromRoot($child);
+        }
+        };
+        
+        $getAllChildrenFromRoot($rootRessource);
+        
+        return $catalog;
+    }
+
 }
 ?>

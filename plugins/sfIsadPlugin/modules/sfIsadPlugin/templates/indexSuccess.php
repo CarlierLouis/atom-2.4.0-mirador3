@@ -57,7 +57,7 @@
     <?php include '../atom-2.4.0-mirador3/mirador3/miradorViewerComponent.php'?>
     <?php include '../atom-2.4.0-mirador3/mirador3/MiradorUtils.php'?>
     <?php if (MiradorUtils::isIIIFManifest($digitalObjectLink)): ?>
-      <?php echo renderMiradorViewerComponent($digitalObjectLink,  MiradorUtils::addParentChildrenToCatalog($digitalObjectLink, $resource)) ?>
+      <?php echo renderMiradorViewerComponent($digitalObjectLink,  MiradorUtils::getAllChildrenFromRoot($resource)) ?>
     <?php endif; ?>
 
   </section>

@@ -32,7 +32,14 @@
   <?php endif; ?>
 
   <?php if (check_field_visibility('app_element_visibility_digital_object_mime_type')): ?>
-    <?php echo render_show(__('Mime-type'), $resource->mimeType, array('fieldLabel' => 'mimeType')) ?>
+    <!-- Manifest management for IIIF viewers -->
+    <?php if (QubitSetting::getByName('iiifviewer_mirador') == "yes"): ?>
+      <?php if (MiradorUtils::isIIIFManifest($resource->informationObject->getDigitalObjectLink())): ?>
+        <?php $resource->mimeType = 'application/json' ?>
+      <?php endif; ?>
+    <?php endif; ?>
+    <!-- -->
+      <?php echo render_show(__('Mime-type'), $resource->mimeType, array('fieldLabel' => 'mimeType')) ?>
   <?php endif; ?>
 
   <?php if (check_field_visibility('app_element_visibility_digital_object_file_size')): ?>

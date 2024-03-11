@@ -31,7 +31,7 @@
         }],
         catalog: [
             <?php foreach ($catalog as $manifestPathLink): ?>
-                { manifestId: "<?php echo $manifestPathLink ?>"},
+                { manifestId: "<?php echo $manifestPathLink ?>", provider: ""},
             <?php endforeach; ?>
         ]
         });
