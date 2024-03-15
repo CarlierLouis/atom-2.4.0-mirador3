@@ -6,7 +6,7 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             renderMiradorViewerComponent("<?php echo $resource->informationObject->getDigitalObjectLink(); ?>",
-            <?php echo json_encode(MiradorUtils::getAllChildrenFromRoot($resource->informationObject)); ?>);
+            <?php echo json_encode(QubitDigitalObject::getAllChildrenFromRoot($resource->informationObject)); ?>);
         });
     </script>
 </div>

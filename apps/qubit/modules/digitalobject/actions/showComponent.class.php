@@ -118,9 +118,8 @@ class DigitalObjectShowComponent extends sfComponent
   private function setComponentType()
   {
     // Figure out which show component to call
-    include '../atom-2.4.0-mirador3/mirador3/MiradorUtils.php';
     if (QubitSetting::getByName('iiifviewer_mirador') == "yes" &&
-    MiradorUtils::isIIIFManifest($this->resource->informationObject->getDigitalObjectLink()))
+   QubitDigitalObject::isIIIFManifest($this->resource->informationObject->getDigitalObjectLink()))
     {
       $this->showComponent = 'showIIIFManifest';
     } else {

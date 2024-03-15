@@ -25,7 +25,7 @@
  * @author     Carlier Louis
  */
 class DigitalObjectShowIIIFManifestComponent extends sfComponent
-{
+{   
   public function execute($request)
   {
     $this->response->addJavaScript('../node_modules/mirador/dist/mirador.min.js', 'last');;

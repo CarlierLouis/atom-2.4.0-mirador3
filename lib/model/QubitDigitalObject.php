@@ -3283,4 +3283,98 @@ class QubitDigitalObject extends BaseDigitalObject
 
     return $size > sfConfig::get('app_upload_limit', 0) * pow(1024, 3);
   }
+
+
+
+  /*
+  * -----------------------------------------------------------------------
+  * IIIF Manifest METHODS
+  * -----------------------------------------------------------------------
+  */
+
+    /**
+     * Check if a digital object is a json file
+     *
+     * @return boolean true if the digital object is a json file
+    */
+  public static function isJson($digitalObjectLink) 
+    {
+        $get_content = file_get_contents($digitalObjectLink);
+        $json_data = json_decode($get_content);
+        if ($json_data != null) 
+        {
+            return true;
+        }
+        else 
+        {
+            return false;
+        }
+    }
+
+    /**
+     * Check if a digital object is a iiif manifestd
+     *
+     * @return boolean true if the digital object is a iiif manifest
+     */
+    public static function isIIIFManifest($digitalObjectLink)
+    {
+        $get_content = file_get_contents($digitalObjectLink);
+        $json_data = json_decode($get_content, true);
+        
+        if ($json_data != null &&
+            $json_data['@context'] === 'http://iiif.io/api/presentation/2/context.json' &&
+            $json_data['@type'] === 'sc:Manifest' &&
+            isset($json_data['@context']) &&
+            isset($json_data['@id']) &&
+            isset($json_data['@type'])
+        ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     *  Get IIIF Children from the same parent
+     *
+     * @return array catalog containing children digital objects links fromt the same parent
+     */
+    public static function getParentChildren($resource) 
+    {
+        $catalog = [];
+        if ($resource->parentId != 1) 
+        {
+            foreach ($resource->parent->getChildren() as $child) 
+            {
+                if ($resource->id != $child->id && self::isIIIFManifest($child->getDigitalObjectLink())) 
+                {
+                    $catalog[] = $child->getDigitalObjectLink();
+                }
+            }
+        }
+        return $catalog;
+    }
+
+    /**
+     * Get all IIIF Children from the root 
+     *
+     * @return array catalog containing all children digital objects links from the root 
+     */
+    public static function getAllChildrenFromRoot($resource) 
+    {
+        $catalog = [];
+        $rootRessource = $resource->getCollectionRoot();
+        $getAllChildrenFromRoot = function ($rootRessource) use (&$getAllChildrenFromRoot, &$catalog) {
+        foreach ($rootRessource->getChildren() as $child) {
+            if (self::isIIIFManifest($child->getDigitalObjectLink())) {
+                $catalog[] = $child->getDigitalObjectLink();
+            }
+            $getAllChildrenFromRoot($child);
+        }
+        };
+        
+        $getAllChildrenFromRoot($rootRessource);
+        
+        return $catalog;
+    }
 }
