@@ -21,7 +21,7 @@
  * @author Carlier Louis
  */ 
 
-class MiradorUtils 
+class MiradorUtils
 {
     public static function isJson($digitalObjectLink) 
     {
@@ -74,22 +74,12 @@ class MiradorUtils
         return $catalog;
     }
 
-    // Get the root of a ressource
-    public static function getRootResource($resource) 
-    {
-        while ($resource->parentId != 1) {
-            $resource = $resource->parent;
-        }
-        
-        return $resource;
-    }
-
 
     // Get all IIIF Children from the root 
     public static function getAllChildrenFromRoot($resource) 
     {
         $catalog = [];
-        $rootRessource = self::getRootResource($resource);
+        $rootRessource = $resource->getCollectionRoot();
         $getAllChildrenFromRoot = function ($rootRessource) use (&$getAllChildrenFromRoot, &$catalog) {
         foreach ($rootRessource->getChildren() as $child) {
             if (self::isIIIFManifest($child->getDigitalObjectLink())) {

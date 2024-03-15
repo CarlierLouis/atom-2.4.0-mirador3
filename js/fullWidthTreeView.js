@@ -107,6 +107,9 @@
       {
         response = $(response);
 
+        $('#main-column #mirador').replaceWith(response.find('#main-column #mirador'));
+        
+
         // Insert new content into page
         $('#main-column h1').replaceWith($(response.find('#main-column h1')));
         $('#main-column .breadcrumb').replaceWith($(response.find('#main-column .breadcrumb')));

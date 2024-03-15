@@ -114,55 +114,63 @@ class DigitalObjectShowComponent extends sfComponent
     return false;
   }
 
+
   private function setComponentType()
   {
     // Figure out which show component to call
-    switch ($this->resource->mediaTypeId)
+    include '../atom-2.4.0-mirador3/mirador3/MiradorUtils.php';
+    if (QubitSetting::getByName('iiifviewer_mirador') == "yes" &&
+    MiradorUtils::isIIIFManifest($this->resource->informationObject->getDigitalObjectLink()))
     {
-      case QubitTerm::IMAGE_ID:
+      $this->showComponent = 'showIIIFManifest';
+    } else {
+      switch ($this->resource->mediaTypeId)
+      {
+        case QubitTerm::IMAGE_ID:
 
-        if ($this->resource->showAsCompoundDigitalObject())
-        {
-          $this->showComponent = 'showCompound';
-        }
-        else if ($this->resource->isWebCompatibleImageFormat())
-        {
-          $this->showComponent = 'showImage';
-        }
-        else
-        {
+          if ($this->resource->showAsCompoundDigitalObject())
+          {
+            $this->showComponent = 'showCompound';
+          }
+          else if ($this->resource->isWebCompatibleImageFormat())
+          {
+            $this->showComponent = 'showImage';
+          }
+          else
+          {
+            $this->showComponent = 'showDownload';
+          }
+
+          break;
+
+        case QubitTerm::AUDIO_ID:
+          $this->showComponent = 'showAudio';
+
+          break;
+
+        case QubitTerm::VIDEO_ID:
+          $this->showComponent = 'showVideo';
+
+          break;
+
+        case QubitTerm::TEXT_ID:
+
+          if ($this->resource->showAsCompoundDigitalObject())
+          {
+            $this->showComponent = 'showCompound';
+          }
+          else
+          {
+            $this->showComponent = 'showText';
+          }
+
+          break;
+
+        default:
           $this->showComponent = 'showDownload';
-        }
 
-        break;
-
-      case QubitTerm::AUDIO_ID:
-        $this->showComponent = 'showAudio';
-
-        break;
-
-      case QubitTerm::VIDEO_ID:
-        $this->showComponent = 'showVideo';
-
-        break;
-
-      case QubitTerm::TEXT_ID:
-
-        if ($this->resource->showAsCompoundDigitalObject())
-        {
-          $this->showComponent = 'showCompound';
-        }
-        else
-        {
-          $this->showComponent = 'showText';
-        }
-
-        break;
-
-      default:
-        $this->showComponent = 'showDownload';
-
-        break;
+          break;
+      }
     }
   }
 }
