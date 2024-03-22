@@ -107,23 +107,28 @@
       {
         response = $(response);
 
-        $('#main-column #mirador').replaceWith(response.find('#main-column #mirador'));
-        
+        if ($(response.find('#mirador')).length <= 0)
+        {
+          // Insert new content into page
+          $('#miradorViewer-wrapper').remove()
 
-        // Insert new content into page
-        $('#main-column h1').replaceWith($(response.find('#main-column h1')));
-        $('#main-column .breadcrumb').replaceWith($(response.find('#main-column .breadcrumb')));
-        $('#main-column .row').replaceWith($(response.find('#main-column .row')));
+          $('#main-column h1').replaceWith($(response.find('#main-column h1')));
+          $('#main-column .breadcrumb').replaceWith($(response.find('#main-column .breadcrumb')));
+          $('#main-column .row').replaceWith($(response.find('#main-column .row')));
 
-        $('#main-column > div.messages.error').remove();
-        $('#main-column .breadcrumb').after($(response.find('#main-column > div.messages.error')));
+          $('#main-column > div.messages.error').remove();
+          $('#main-column .breadcrumb').after($(response.find('#main-column > div.messages.error')));
 
+          // Attach the Drupal Behaviour so blank.js does its thing
+          Drupal.attachBehaviors(document)
 
-        // Attach the Drupal Behaviour so blank.js does its thing
-        Drupal.attachBehaviors(document)
-
-        // Update the url, TODO save the state
-        window.history.pushState(null, null, url);
+          // Update the url, TODO save the state
+          window.history.pushState(null, null, url);
+        }
+        else 
+        {
+          window.location.href = url;
+        }
       });
     };
 
