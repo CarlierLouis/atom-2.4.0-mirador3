@@ -28,6 +28,16 @@
 
       </fieldset>
 
+      <fieldset class="collapsible">
+
+        <legend><?php echo __('Mirador Catalog') ?></legend>
+
+        <?php echo $form->miradorCatalog
+          ->label(__('Mirador Catalog (elements in the viewer resources)'))
+          ->renderRow() ?>
+
+      </fieldset>
+
     </div>
 
     <section class="actions">

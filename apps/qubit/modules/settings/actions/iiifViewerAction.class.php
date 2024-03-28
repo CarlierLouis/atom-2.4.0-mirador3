@@ -31,6 +31,7 @@ class SettingsIIIFViewerAction extends DefaultEditAction
   public static
     $NAMES = array(
       'mirador',
+      'miradorCatalog',
     );
 
   protected function earlyExecute()
@@ -42,6 +43,7 @@ class SettingsIIIFViewerAction extends DefaultEditAction
   {
     switch ($name)
     {
+      // enable/disable the Mirador Viewer functionalities  
       case 'mirador':
         $this->miradorSetting = QubitSetting::getByName('iiifviewer_mirador');
         $default = 'no';
@@ -52,6 +54,19 @@ class SettingsIIIFViewerAction extends DefaultEditAction
         $this->addSettingRadioButtonsField($this->miradorSetting, $name, $default, $options);
 
         break;
+        
+        // manages the items (from the tree structure) in the Mirador catalogue
+        case 'miradorCatalog':
+          $this->miradorSetting = QubitSetting::getByName('mirador_catalog');
+          $default = 'fromsameparent';
+          $options = array(
+            'fromsameparent' => $this->i18n->__('From Same Parent'),
+            'allfromsameparent' => $this->i18n->__('All From Same Parent'),
+            'allfromroot' => $this->i18n->__('All From Root'));
+
+          $this->addSettingRadioButtonsField($this->miradorSetting, $name, $default, $options);
+
+          break;
     }
   }
 
@@ -75,7 +90,12 @@ class SettingsIIIFViewerAction extends DefaultEditAction
       case 'mirador':
         $this->createOrUpdateSetting($this->miradorSetting, 'iiifviewer_mirador', $field->getValue());
 
-        break;
+      break;
+
+      case 'miradorCatalog':
+        $this->createOrUpdateSetting($this->miradorSetting, 'mirador_catalog', $field->getValue());
+
+      break;
     }
   }
 

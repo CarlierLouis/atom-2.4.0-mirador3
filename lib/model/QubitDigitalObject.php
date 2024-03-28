@@ -3337,28 +3337,26 @@ class QubitDigitalObject extends BaseDigitalObject
     /**
      *  Get IIIF Children from the same parent
      *
-     * @return array catalog containing children digital objects links fromt the same parent
+     * @return array catalog containing children digital objects links from the same parent
      */
-    public static function getParentChildren($resource) 
+    public static function getParentDirectChildren($resource) 
     {
         $catalog = [];
-        if ($resource->parentId != 1) 
+        foreach ($resource->parent->getChildren() as $child) 
         {
-            foreach ($resource->parent->getChildren() as $child) 
+            if (self::isIIIFManifest($child->getDigitalObjectLink())) 
             {
-                if ($resource->id != $child->id && self::isIIIFManifest($child->getDigitalObjectLink())) 
-                {
-                    $catalog[] = $child->getDigitalObjectLink();
-                }
+                $catalog[] = $child->getDigitalObjectLink();
             }
         }
+        
         return $catalog;
     }
 
     /**
      * Get all IIIF Children from the root 
      *
-     * @return array catalog containing all children digital objects links from the root 
+     * @return array catalog containing ALL children digital objects links from the root 
      */
     public static function getAllChildrenFromRoot($resource) 
     {
@@ -3377,4 +3375,33 @@ class QubitDigitalObject extends BaseDigitalObject
         
         return $catalog;
     }
+
+    /**
+     *  Get IIIF Children from the same parent
+     *
+     * @return array catalog containing ALL children digital objects links from the first parent
+     */
+    public static function getAllChidrenFromParent($resource) {
+      $catalog = [];
+      $rootRessource = $resource->parent;
+      $getAllChildrenFromRoot = function ($rootRessource) use (&$getAllChildrenFromRoot, &$catalog) {
+      foreach ($rootRessource->getChildren() as $child) {
+          if (self::isIIIFManifest($child->getDigitalObjectLink())) {
+              $catalog[] = $child->getDigitalObjectLink();
+          }
+          $getAllChildrenFromRoot($child);
+      }
+      };
+      
+      $getAllChildrenFromRoot($rootRessource);
+
+      return $catalog;
+    }
+
+
+    public static function getAllChildrenFromSerie() {
+      
+      //return $resource->parent->informationObject->levelOfDescription;
+    }
+
 }

@@ -119,7 +119,7 @@ class DigitalObjectShowComponent extends sfComponent
   {
     // Figure out which show component to call
     if (QubitSetting::getByName('iiifviewer_mirador') == "yes" &&
-   QubitDigitalObject::isIIIFManifest($this->resource->informationObject->getDigitalObjectLink()))
+    QubitDigitalObject::isIIIFManifest($this->resource->informationObject->getDigitalObjectLink()))
     {
       $this->showComponent = 'showIIIFManifest';
     } else {
