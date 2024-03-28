@@ -4,8 +4,8 @@
 
   <?php if(QubitSetting::getByName('iiifviewer_mirador') == "yes" && QubitDigitalObject::isIIIFManifest($resource->informationObject->getDigitalObjectLink())): ?>
     
-    <div class="digital-object-reference" style="">
-      <?php echo link_to(image_tag($representation->getFullPath(), array('alt' => __('Open original %1%', array('%1%' => sfConfig::get('app_ui_label_digitalobject'))))), $link, array('target' => '_blank')) ?>
+    <div class="digital-object-reference">
+      <?php echo link_to(image_tag($representation->getFullPath(), array('alt' => __('Open original %1%', array('%1%' => sfConfig::get('app_ui_label_digitalobject'))))), public_path($representation->getFullPath())) ?>
    </div>
 
   <?php else: ?>
