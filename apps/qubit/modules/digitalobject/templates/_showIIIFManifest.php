@@ -1,5 +1,7 @@
+<?php use_helper('Text') ?>
+
 <div id="miradorViewer-wrapper">
-    <div id="mirador"></div>
+    <div id="<?php echo "mirador" ?>"></div>
 </div>
 <br>
 

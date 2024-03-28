@@ -57,14 +57,14 @@ class SettingsIIIFViewerAction extends DefaultEditAction
         
         // manages the items (from the tree structure) in the Mirador catalogue
         case 'miradorCatalog':
-          $this->miradorSetting = QubitSetting::getByName('mirador_catalog');
+          $this->miradorCatalogSetting = QubitSetting::getByName('mirador_catalog');
           $default = 'fromsameparent';
           $options = array(
-            'fromsameparent' => $this->i18n->__('From Same Parent'),
-            'allfromsameparent' => $this->i18n->__('All From Same Parent'),
-            'allfromroot' => $this->i18n->__('All From Root'));
+            'fromsameparent' => $this->i18n->__('Direct Children From Same Parent'),
+            'allfromsameparent' => $this->i18n->__('All Children From Same Parent'),
+            'allfromroot' => $this->i18n->__('All Children From Root'));
 
-          $this->addSettingRadioButtonsField($this->miradorSetting, $name, $default, $options);
+          $this->addSettingRadioButtonsField($this->miradorCatalogSetting, $name, $default, $options);
 
           break;
     }
@@ -93,7 +93,7 @@ class SettingsIIIFViewerAction extends DefaultEditAction
       break;
 
       case 'miradorCatalog':
-        $this->createOrUpdateSetting($this->miradorSetting, 'mirador_catalog', $field->getValue());
+        $this->createOrUpdateSetting($this->miradorCatalogSetting, 'mirador_catalog', $field->getValue());
 
       break;
     }
