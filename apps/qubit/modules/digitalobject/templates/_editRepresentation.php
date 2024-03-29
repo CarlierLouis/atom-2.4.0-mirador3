@@ -2,20 +2,11 @@
 
   <div style="float: right;">
 
-  <?php if(QubitSetting::getByName('iiifviewer_mirador') == "yes" && QubitDigitalObject::isIIIFManifest($resource->informationObject->getDigitalObjectLink())): ?>
-    
-    <div class="digital-object-reference">
-      <?php echo link_to(image_tag($representation->getFullPath(), array('alt' => __('Open original %1%', array('%1%' => sfConfig::get('app_ui_label_digitalobject'))))), public_path($representation->getFullPath())) ?>
-   </div>
-
-  <?php else: ?>
-    <?php echo get_component('digitalobject', 'show', array(
-      'iconOnly' => true,
-      'link' => public_path($representation->getFullPath()),
-      'resource' => $resource,
-      'usageType' => QubitTerm::THUMBNAIL_ID)) ?>
-
-  <?php endif;?>
+  <?php echo get_component('digitalobject', 'show', array(
+    'iconOnly' => true,
+    'link' => public_path($representation->getFullPath()),
+    'resource' => $resource,
+    'usageType' => QubitTerm::THUMBNAIL_ID)) ?>
 
   </div>
 

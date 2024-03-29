@@ -31,5 +31,6 @@ class DigitalObjectShowIIIFManifestComponent extends sfComponent
     $this->response->addJavaScript('../node_modules/mirador/dist/mirador.min.js', 'last');;
     $this->response->addJavaScript('mirador', 'last');
     $this->response->addStylesheet('mirador', 'last');
+    $this->representation = $this->resource->getRepresentationByUsage($this->usageType);
   }
 }
