@@ -30,10 +30,16 @@
     <?php endif; ?>
 
     <script>
+        <?php ?>
+
+        <?php $miradorSettings = json_encode(array('language' => sfContext::getInstance()->user->getCulture())) ?>
+
         document.addEventListener("DOMContentLoaded", function () {
             renderMiradorViewerComponent("<?php echo $resource->informationObject->getDigitalObjectLink(); ?>",
-            <?php echo json_encode($getCatalog); ?>);
+            <?php echo json_encode($getCatalog); ?>, <?php echo $miradorSettings ?>);
         });
     </script>
 
 <?php endif; ?>
+
+<?php echo sfContext::getInstance()->user->getCulture() ?>

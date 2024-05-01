@@ -1,4 +1,4 @@
-function renderMiradorViewerComponent(jsonlink, catalog) {
+function renderMiradorViewerComponent(jsonlink, catalog, settings) {
     var miradorInstance = Mirador.viewer({
         id: 'mirador',
         themes: {
@@ -11,7 +11,7 @@ function renderMiradorViewerComponent(jsonlink, catalog) {
                 },
             },
         },
-        language: 'fr',
+        language: settings["language"],
         windows: [
             {
                 manifestId: jsonlink,
