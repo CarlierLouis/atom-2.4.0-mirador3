@@ -41,5 +41,3 @@
     </script>
 
 <?php endif; ?>
-
-<?php echo sfContext::getInstance()->user->getCulture() ?>
