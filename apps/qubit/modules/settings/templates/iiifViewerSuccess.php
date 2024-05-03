@@ -38,6 +38,16 @@
 
       </fieldset>
 
+      <fieldset class="collapsible">
+
+        <legend><?php echo __('Mirador view') ?></legend>
+
+        <?php echo $form->miradorView
+          ->label(__('Mirador default window view'))
+          ->renderRow() ?>
+
+      </fieldset>
+
     </div>
 
     <section class="actions">

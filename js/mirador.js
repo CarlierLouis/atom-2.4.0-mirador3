@@ -14,6 +14,7 @@ function renderMiradorViewerComponent(jsonlink, catalog, settings) {
         language: settings["language"],
         windows: [
             {
+                view: settings["view"],
                 manifestId: jsonlink,
             }
         ],

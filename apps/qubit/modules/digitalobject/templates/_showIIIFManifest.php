@@ -32,8 +32,8 @@
     <script>
         <?php ?>
 
-        <?php $miradorSettings = json_encode(array('language' => sfContext::getInstance()->user->getCulture())) ?>
-
+        <?php $miradorSettings = json_encode(array('language' => sfContext::getInstance()->user->getCulture(), 'view' => strval(QubitSetting::getByName('mirador_view')))) ?>
+        
         document.addEventListener("DOMContentLoaded", function () {
             renderMiradorViewerComponent("<?php echo $resource->informationObject->getDigitalObjectLink(); ?>",
             <?php echo json_encode($getCatalog); ?>, <?php echo $miradorSettings ?>);
@@ -41,3 +41,4 @@
     </script>
 
 <?php endif; ?>
+

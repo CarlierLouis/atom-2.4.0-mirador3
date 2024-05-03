@@ -32,6 +32,7 @@ class SettingsIIIFViewerAction extends DefaultEditAction
     $NAMES = array(
       'mirador',
       'miradorCatalog',
+      'miradorView'
     );
 
   protected function earlyExecute()
@@ -67,6 +68,17 @@ class SettingsIIIFViewerAction extends DefaultEditAction
           $this->addSettingRadioButtonsField($this->miradorCatalogSetting, $name, $default, $options);
 
           break;
+
+          case 'miradorView':
+            $this->miradorViewSetting = QubitSetting::getByName('mirador_view');
+            $default = 'single';
+            $options = array(
+              'single' => $this->i18n->__('Single'),
+              'gallery' => $this->i18n->__('Gallery'));
+    
+            $this->addSettingRadioButtonsField($this->miradorViewSetting, $name, $default, $options);
+    
+            break;
     }
   }
 
@@ -94,6 +106,11 @@ class SettingsIIIFViewerAction extends DefaultEditAction
 
       case 'miradorCatalog':
         $this->createOrUpdateSetting($this->miradorCatalogSetting, 'mirador_catalog', $field->getValue());
+
+      break;
+
+      case 'miradorView':
+        $this->createOrUpdateSetting($this->miradorViewSetting, 'mirador_view', $field->getValue());
 
       break;
     }
