@@ -16,6 +16,7 @@ function renderMiradorViewerComponent(jsonlink, catalog, settings) {
             {
                 view: settings["view"],
                 manifestId: jsonlink,
+                allowClose: false
             }
         ],
         catalog: catalog.map(function(manifestPathLink) {
