@@ -16,3 +16,6 @@
     float:none;
 }
 
+#manifestURL-label {
+    display: none;
+}

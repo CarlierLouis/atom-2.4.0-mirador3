@@ -28,8 +28,10 @@ class DigitalObjectShowIIIFManifestComponent extends sfComponent
 {   
   public function execute($request)
   {
-    $this->response->addJavaScript('../node_modules/mirador/dist/mirador.min.js', 'last');
-    $this->response->addJavaScript('mirador', 'last');
+    //https://unpkg.com/mirador@latest/dist/mirador.min.js
+    //../node_modules/mirador/dist/mirador.min.js
+    $this->response->addJavaScript('../node_modules/mirador/dist/mirador.min.js', 'last', ['async', 'defer']);
+    $this->response->addJavaScript('mirador', 'last', ['async', 'defer']);
     $this->response->addStylesheet('mirador', 'last');
     $this->representation = $this->resource->getRepresentationByUsage($this->usageType);
   }

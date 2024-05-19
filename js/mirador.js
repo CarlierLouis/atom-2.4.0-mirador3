@@ -11,10 +11,10 @@ function renderMiradorViewerComponent(jsonlink, catalog, settings) {
                 },
             },
         },
-        language: settings["language"],
+        language: settings.language,
         windows: [
             {
-                view: settings["view"],
+                view: settings.view,
                 manifestId: jsonlink,
                 allowClose: false
             }
