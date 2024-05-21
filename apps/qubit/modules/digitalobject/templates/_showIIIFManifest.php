@@ -15,6 +15,8 @@
     </div>
     <br>
 
+    
+
     <?php $miradorCatalogSettings = QubitSetting::getByName('mirador_catalog') ?>
 
     <?php if ($miradorCatalogSettings == "fromsameparent"):  ?>
@@ -29,21 +31,19 @@
         <?php $getCatalog = QubitDigitalObject::getAllChildrenFromRoot($resource->informationObject) ?>
     <?php endif; ?>
 
-    <script>
 
-        <?php $miradorSettings = json_encode(array('language' => sfContext::getInstance()->user->getCulture(), 'view' => strval(QubitSetting::getByName('mirador_view')))) ?>
-        
-        //var catalogData = <?php echo json_encode($getCatalog); ?>;
-        //var miradorSettings = <?php echo $miradorSettings; ?>;
-       
+    <?php $currentManifest = $resource->informationObject->getDigitalObjectLink();  ?>
+    <?php $limitedCatalog = QubitDigitalObject::getMiradorCatalogWithMaxSize($currentManifest, $getCatalog, 50); ?>
+  
+     <?php $miradorSettings = json_encode(array('language' => sfContext::getInstance()->user->getCulture(), 'view' => strval(QubitSetting::getByName('mirador_view')))) ?>
+
+    <script>
         document.addEventListener("DOMContentLoaded", function () {
             renderMiradorViewerComponent("<?php echo $resource->informationObject->getDigitalObjectLink(); ?>",
-            <?php echo json_encode($getCatalog); ?>, <?php echo $miradorSettings ?>);
+            <?php echo json_encode($limitedCatalog); ?>, <?php echo $miradorSettings ?>);
         });
     </script>
 
 <?php endif; ?>
-
-
 
 

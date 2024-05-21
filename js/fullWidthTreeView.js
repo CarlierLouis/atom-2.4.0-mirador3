@@ -1,27 +1,5 @@
 (function ($) {
 
-    /*$(loadMiradorScripts);
-
-    function loadMiradorScripts(callback) {
-      var script = document.createElement("script");
-      script.type = "text/javascript";
-      script.src = "../js/mirador.js";
-      script.onload = callback;
-      document.head.appendChild(script);
-
-      var script2 = document.createElement("script");
-      script2.type = "text/javascript";
-      script2.src = "https://unpkg.com/mirador@latest/dist/mirador.min.js";
-      script2.onload = callback;
-      document.head.appendChild(script2);
-
-      var css = document.createElement("link");
-      css.rel = "stylesheet";
-      css.type = "text/css";
-      css.href = "../css/mirador.css";
-      document.head.appendChild(css);
-    }*/
-
     // Handle older browser using hash/anchor urls
     if (window.location.hash)
     {
@@ -149,8 +127,6 @@
         }
         else 
         {
-          //var manifesteURL = document.querySelector('.url a');
-          //renderMiradorViewerComponent(manifesteURL.textContent, catalogData, miradorSettings);
           window.location.href = url;
         }
       });

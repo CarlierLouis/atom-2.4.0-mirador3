@@ -3377,7 +3377,7 @@ class QubitDigitalObject extends BaseDigitalObject
     }
 
     /**
-     *  Get IIIF Children from the same parent
+     * Get IIIF Children from the same parent
      *
      * @return array catalog containing ALL children digital objects links from the first parent
      */
@@ -3402,6 +3402,35 @@ class QubitDigitalObject extends BaseDigitalObject
     public static function getAllChildrenFromSerie() {
       
       //return $resource->parent->informationObject->levelOfDescription;
+    }
+
+    /**
+     *  Get the catalog of Manifests limited with the max size parameter
+     * (This function limits the size of the catalog to a specified maximum number of manifests.
+     * It attempts to center the current manifest within the limitedcatalog, and adjusts the start
+     * and end indices to include additional manifests from either side if there are fewer than the maximum allowed)
+     * 
+     * @param string $currentManifest  the URI of the current manifest
+     * @param array $getCatalog        the full catalog of manifest URIs
+     * @param int $max                 the maximum number of manifests to include in the catalog
+     * 
+     * @return array limitedCatalog based on the defined max size
+     */
+    public static function getMiradorCatalogWithMaxSize($currentManifest, $getCatalog, $max) {
+      $currentIndex = array_search($currentManifest, $getCatalog);
+      $start = max(0, $currentIndex - floor($max / 2));
+      $end = min(count($getCatalog), $currentIndex + ceil($max / 2));
+      $actualCount = $end - $start;
+      if ($actualCount <= $max) {
+          $diff = $max - $actualCount;
+          if ($start == 0) {
+              $end = min(count($getCatalog), $end + $diff + 1);
+          } elseif ($end == count($getCatalog)) {
+              $start = max(0, $start - $diff - 1);
+          }
+      }
+      $limitedCatalog = array_slice($getCatalog, $start, $end);
+      return $limitedCatalog;
     }
 
 }
